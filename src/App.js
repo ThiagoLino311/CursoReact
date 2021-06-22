@@ -2,7 +2,8 @@ import { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  state = { //estado com array e objetos
+  state = {
+    counter: 0,
     posts: [
       {
         id: 1,
@@ -21,14 +22,37 @@ class App extends Component {
       },
     ]
   };
+  timeoutUpdate = null; //Declarando timeoutUpdate par poder acessa-lo
+
+  componentDidMount() { //Quando o componente acaba de ser montado esse metodo é executado
+    this.handleTimeout();
+  }
+
+  componentDidUpdate() { //Quando o componente é atualizado esse metodo é executado
+    this.handleTimeout();
+  }
+
+  componentWillUnmount() { //Quando o componente é desmontado esse metodo é executado
+    clearTimeout(this.timeoutUpdate);//limpar lixo que pode ser gerado na pagina
+  }
+
+  handleTimeout = () => { //metodo criado para mudar o titulo do primeiro post e o contador
+    const { posts, counter } = this.state;
+    posts[0].title = 'O título mudou';
+
+    this.timeoutUpdate = setTimeout(() => {
+      this.setState({ posts, counter: counter + 1 });
+    }, 1000);
+  }
 
   render() {
-    const { posts } = this.state;
+    const { posts, counter } = this.state;
 
     return (
       <div className="App">
-        {posts.map(post => ( //.map cria um array que copia os elementos do array original
-          <div key={post.id /* key: identificação do elemento para otimizar a renderização */ }>
+        <h1>{counter}</h1>
+        {posts.map(post => (
+          <div key={post.id}>
             <h1>{post.title}</h1>
             <p>{post.body}</p>
           </div>
@@ -37,4 +61,4 @@ class App extends Component {
     );
   }
 }
-export default App
+export default App;
