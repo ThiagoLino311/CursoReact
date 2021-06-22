@@ -1,48 +1,40 @@
-import logo from './logo.svg';
+import { Component } from 'react';
 import './App.css';
-import { Component } from 'react'; //Auto import do react
 
 class App extends Component {
-
-  state = { //estado
-    name: 'Thiago Lino',
-    counter: 0
+  state = { //estado com array e objetos
+    posts: [
+      {
+        id: 1,
+        title: 'O título 1',
+        body: 'O corpo 1'
+      },
+      {
+        id: 2,
+        title: 'O título 2',
+        body: 'O corpo 2'
+      },
+      {
+        id: 3,
+        title: 'O título 3',
+        body: 'O corpo 3'
+      },
+    ]
   };
 
-
-  handlePClick = () => { // função que é chamada quando evento ocorre
-    this.setState({ name: 'THIAGO LINO' }); // acesso a mudança feito através do setState
-  }
-
-  handleAClick = (event) => { // utilizar arrow function quando precisar utilizar o this para não precisar usar o .bind
-    event.preventDefault(); //Tira evento padrão de um elemento e passa a ser executado o evento que eu descrever
-    const { counter } = this.state;
-    this.setState({ counter: counter + 1 });
-  }
-
-  render() { //função que renderiza elementos
-    const { name, counter } = this.state;
+  render() {
+    const { posts } = this.state;
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p onClick={this.handlePClick /* Quando clicado executa a função que altera o estado */}>
-            {name} {counter}
-          </p>
-          <a
-            onClick={this.handleAClick /* Quando clicado executa a função que altera o estado */}
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {posts.map(post => ( //.map cria um array que copia os elementos do array original
+          <div key={post.id /* key: identificação do elemento para otimizar a renderização */ }>
+            <h1>{post.title}</h1>
+            <p>{post.body}</p>
+          </div>
+        ))}
       </div>
     );
   }
 }
-
-export default App;
+export default App
